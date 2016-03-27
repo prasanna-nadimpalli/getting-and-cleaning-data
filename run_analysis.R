@@ -1,5 +1,5 @@
 
-#Step 1:
+# tep 1:
 ## Loading the Data sets
 
 xTrainingDf <- read.csv("./data/assignment_week4/UCI_HAR_Dataset/train/X_train.txt", sep = "", header = FALSE)
@@ -9,7 +9,8 @@ xTestDf <- read.csv("./data/assignment_week4/UCI_HAR_Dataset/test/X_test.txt", s
 subjectTestDf <- read.csv("./data/assignment_week4/UCI_HAR_Dataset/test/subject_test.txt", sep = "", header = FALSE)
 subjectTrainDf <- read.csv("./data/assignment_week4/UCI_HAR_Dataset/train/subject_train.txt", sep = "", header = FALSE)
 
-#Renaming the columns to variable names
+# Step 2:
+## Renaming the columns to variable names
 Library(plyr)
 subjectTestDf <- rename(subjectTestDf, c("V1" = "subjectName"))
 subjectTrainDf <- rename(subjectTrainDf, c("V1" = "subjectName"))
@@ -339,15 +340,16 @@ xTestDf <- xTestDf[, c(
 "fBodyBodyGyroJerkMagMean",
 "fBodyBodyGyroJerkMagStd")]
 
-
-#Merge all the columns in the data sets columnwise
+# Step 3
+## Merge all the columns in the data sets columnwise
 > testDataSet <- cbind(subjectTestDf, yTestDf, xTestDf)
 > trainingDataSet <- cbind(subjectTrainDf, yTrainingDf, xTrainingDf )
 
 #Merge both test and training data sets 
 mergedDataSet <- rbind(testDataSet, trainingDataSet)
 
-#Rename the activity to the more meaningful labels
+# Step 4:
+## Rename the activity to the more meaningful labels
 > mergedDataSet$ActivityName[mergedDataSet$ActivityName %in% c("1")] <- "WALKING"
 > mergedDataSet$ActivityName[mergedDataSet$ActivityName %in% c("2")] <- "WALKING_UPSTAIRS"
 > mergedDataSet$ActivityName[mergedDataSet$ActivityName %in% c("3")] <- "WALKING_DOWNSTAIRS"
@@ -355,13 +357,15 @@ mergedDataSet <- rbind(testDataSet, trainingDataSet)
 > mergedDataSet$ActivityName[mergedDataSet$ActivityName %in% c("5")] <- "STANDING"
 > mergedDataSet$ActivityName[mergedDataSet$ActivityName %in% c("6")] <- "LAYING"
 
+# Step 5:
 #create a second, independent tidy data set with the average of each variable for each activity and each subject.
 
 cleanDataSetMeans <- aggregate(mergedDataSet[, 3:ncol(mergedDataSet)],
                        by=list(subject = mergedDataSet$subjectName, 
                                label = mergedDataSet$ActivityName ),
                        mean)
--------------------------------------------------------------------------------------
-write output to a text file in ./data folder
+
+# Step 6:
+## write output to a text file in ./data folder
 
 write.table(format(cleanDataSetMeans, scientific=T), "./data/tidy2.txt",row.names=F, col.names=F, quote=2)
