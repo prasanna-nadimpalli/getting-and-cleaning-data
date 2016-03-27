@@ -368,4 +368,4 @@ cleanDataSetMeans <- aggregate(mergedDataSet[, 3:ncol(mergedDataSet)],
 # Step 6:
 ## write output to a text file in working folder
 
-write.table(format(cleanDataSetMeans, scientific=T), "tidy2.txt",row.names=F, col.names=F, quote=2)
+write.table(format(cleanDataSetMeans, scientific=T), "tidy2.txt",row.names=F, col.names=T, quote=2)
